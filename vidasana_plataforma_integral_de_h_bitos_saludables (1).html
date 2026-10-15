@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VidaSana - Hábitos Saludables & Bienestar</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #051b11 0%, #0d3b27 30%, #1b5e3f 70%, #0d2b1d 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #f0fdf4;
+        }
+
+        /* Glassmorphism Effect */
+        .glass-card {
+            background: rgba(18, 53, 36, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .glass-card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card-hover:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-4px);
+            border-color: rgba(187, 247, 208, 0.35);
+            box-shadow: 0 14px 30px -5px rgba(0, 0, 0, 0.4);
+        }
+
+        .glass-nav {
+            background: rgba(5, 27, 17, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #051b11;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1b5e3f;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2d8a5e;
+        }
+
+        /* Animation for Breathing Bubble */
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            40% { transform: scale(1.4); opacity: 0.95; }
+            60% { transform: scale(1.4); opacity: 0.95; }
+        }
+        .breathing-circle {
+            animation: breathe 19s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header / Navbar Principal -->
+    <header class="sticky top-0 z-50 glass-nav px-4 lg:px-8 py-3.5">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-4">
+            <!-- Logo & Brand -->
+            <div class="flex items-center gap-3">
+                <div class="p-2.5 bg-emerald-500/20 text-emerald-400 rounded-2xl border border-emerald-500/30 shadow-inner">
+                    <i data-lucide="leaf" class="w-7 h-7"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-black tracking-tight text-white flex items-center gap-2">
+                        VidaSana <span class="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2.5 py-0.5 rounded-full border border-emerald-500/30">PRO</span>
+                    </h1>
+                    <p class="text-xs text-emerald-200/70">Plataforma Integral de Salud & Bienestar</p>
+                </div>
+            </div>
+
+            <!-- Navegación por Menús Principales -->
+            <nav class="flex bg-black/30 p-1.5 rounded-2xl border border-white/10 w-full lg:w-auto overflow-x-auto justify-start sm:justify-center">
+                <button onclick="switchTab('comidas')" id="tab-comidas" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 whitespace-nowrap bg-emerald-500 text-white shadow-lg shadow-emerald-950/50">
+                    <i data-lucide="utensils" class="w-4 h-4"></i>
+                    Nutrición
+                </button>
+                <button onclick="switchTab('pasos')" id="tab-pasos" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-emerald-100/80 hover:text-white hover:bg-white/5 transition-all duration-300 whitespace-nowrap">
+                    <i data-lucide="footprints" class="w-4 h-4"></i>
+                    Contador de Pasos
+                </button>
+                <button onclick="switchTab('ejercicio')" id="tab-ejercicio" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-emerald-100/80 hover:text-white hover:bg-white/5 transition-all duration-300 whitespace-nowrap">
+                    <i data-lucide="dumbbell" class="w-4 h-4"></i>
+                    Ejercicios
+                </button>
+                <button onclick="switchTab('mente')" id="tab-mente" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-emerald-100/80 hover:text-white hover:bg-white/5 transition-all duration-300 whitespace-nowrap">
+                    <i data-lucide="brain-sparkles" class="w-4 h-4"></i>
+                    Mente & Descanso
+                </button>
+                <button onclick="switchTab('calculadoras')" id="tab-calculadoras" class="tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-emerald-100/80 hover:text-white hover:bg-white/5 transition-all duration-300 whitespace-nowrap">
+                    <i data-lucide="calculator" class="w-4 h-4"></i>
+                    Herramientas
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- ================= MENÚ 1: NUTRICIÓN Y COMIDAS ================= -->
+        <section id="sec-comidas" class="space-y-6">
+            <!-- Hero Banner Comidas -->
+            <div class="relative glass-card rounded-3xl overflow-hidden border border-white/10">
+                <div class="absolute inset-0 z-0 opacity-25">
+                    <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1400&q=80" alt="Nutrición Saludable" class="w-full h-full object-cover">
+                </div>
+                <div class="relative z-10 p-6 sm:p-8 md:p-10 max-w-3xl">
+                    <span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-300 bg-emerald-500/20 px-3 py-1 rounded-full mb-3 border border-emerald-500/30 backdrop-blur-md">
+                        <i data-lucide="apple" class="w-3.5 h-3.5"></i> Plan Nutricional Completo
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-3">Comidas Recomendadas Diarias</h2>
+                    <p class="text-emerald-100/90 text-sm sm:text-base leading-relaxed">
+                        Explora recetas equilibradas con su información nutricional detallada (Calorías, Proteínas, Carbohidratos, Grasas), lista de ingredientes y guía de preparación paso a paso.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Filtros e Interacción de Comidas -->
+            <div class="glass-card p-4 rounded-2xl flex flex-col md:flex-row justify-between items-stretch md:items-center gap-4">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="text-xs font-semibold text-emerald-200 flex items-center gap-1.5 mr-2">
+                        <i data-lucide="filter" class="w-4 h-4 text-emerald-400"></i> Tipo:
+                    </span>
+                    <button onclick="filterMeals('todos')" class="meal-plan-btn bg-emerald-500 text-white text-xs px-3.5 py-2 rounded-xl font-medium transition-all">Todos</button>
+                    <button onclick="filterMeals('desayuno')" class="meal-plan-btn bg-white/5 text-emerald-200 hover:bg-white/10 text-xs px-3.5 py-2 rounded-xl font-medium transition-all">Desayunos</button>
+                    <button onclick="filterMeals('almuerzo')" class="meal-plan-btn bg-white/5 text-emerald-200 hover:bg-white/10 text-xs px-3.5 py-2 rounded-xl font-medium transition-all">Almuerzos</button>
+                    <button onclick="filterMeals('cena')" class="meal-plan-btn bg-white/5 text-emerald-200 hover:bg-white/10 text-xs px-3.5 py-2 rounded-xl font-medium transition-all">Cenas</button>
+                    <button onclick="filterMeals('snack')" class="meal-plan-btn bg-white/5 text-emerald-200 hover:bg-white/10 text-xs px-3.5 py-2 rounded-xl font-medium transition-all">Snacks</button>
+                </div>
+
+                <!-- Buscador de Platillos -->
+                <div class="relative min-w-[220px]">
+                    <i data-lucide="search" class="w-4 h-4 text-emerald-300 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                    <input type="text" id="meal-search" oninput="searchMeal()" placeholder="Buscar receta o ingrediente..." class="w-full bg-black/30 text-white text-xs rounded-xl pl-9 pr-3 py-2 border border-white/10 focus:outline-none focus:border-emerald-400 placeholder-emerald-200/50">
+                </div>
+            </div>
+
+            <!-- Grid de Tarjetas de Comidas Dinámicas -->
+            <div id="meals-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Se llena mediante JavaScript -->
+            </div>
+        </section>
+
+        <!-- ================= MENÚ PASOS: CONTADOR DE PASOS DIARIOS ================= -->
+        <section id="sec-pasos" class="space-y-6 hidden">
+            <!-- Hero Banner Pasos -->
+            <div class="relative glass-card rounded-3xl overflow-hidden border border-white/10">
+                <div class="absolute inset-0 z-0 opacity-20">
+                    <img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1400&q=80" alt="Caminata y Running" class="w-full h-full object-cover">
+                </div>
+                <div class="relative z-10 p-6 sm:p-8 md:p-10 max-w-3xl">
+                    <span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-300 bg-emerald-500/20 px-3 py-1 rounded-full mb-3 border border-emerald-500/30 backdrop-blur-md">
+                        <i data-lucide="footprints" class="w-3.5 h-3.5"></i> Monitoreo de Movimiento
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-3">Rastreador de Pasos Diarios</h2>
+                    <p class="text-emerald-100/90 text-sm sm:text-base leading-relaxed">
+                        Mide tu actividad física diaria, calcula kilómetros recorridos y estimado de calorías quemadas. Configura tu meta diaria e incrementa tus pasos paso a paso.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Panel de Control Principal de Pasos -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Indicador Circular de Progreso de Pasos -->
+                <div class="glass-card rounded-3xl p-6 flex flex-col items-center justify-center text-center border border-emerald-500/30">
+                    <h3 class="text-xs font-bold text-emerald-300 uppercase tracking-wider mb-4 flex items-center gap-2">
+                        <i data-lucide="target" class="w-4 h-4"></i> Meta de Pasos de Hoy
+                    </h3>
+                    
+                    <div class="relative w-48 h-48 flex items-center justify-center my-2">
+                        <!-- Círculo SVG de progreso -->
+                        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="42" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="transparent" />
+                            <circle id="step-svg-circle" cx="50" cy="50" r="42" stroke="#10b981" stroke-width="8" fill="transparent" stroke-dasharray="263.89" stroke-dashoffset="263.89" stroke-linecap="round" class="transition-all duration-700 ease-out" />
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="steps-count-display" class="text-3xl font-extrabold text-white tracking-tight">0</span>
+                            <span class="text-[11px] text-emerald-200/70 font-medium">pasos de <span id="steps-goal-display">10,000</span></span>
+                            <span id="steps-percent-display" class="text-xs font-bold text-emerald-400 mt-1">0%</span>
+                        </div>
+                    </div>
+
+                    <div class="w-full flex items-center justify-between pt-4 border-t border-white/10 text-xs">
+                        <span class="text-emerald-200/70">Meta actual:</span>
+                        <div class="flex items-center gap-2">
+                            <input type="number" id="steps-goal-input" value="10000" step="500" class="w-24 bg-black/40 border border-white/10 rounded-lg px-2 py-1 text-center text-emerald-300 font-bold focus:outline-none focus:border-emerald-400">
+                            <button onclick="saveStepsGoal()" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 p-1.5 rounded-lg border border-emerald-500/30 transition-all">
+                                <i data-lucide="check" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Métricas Calculadas & Registro de Pasos -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Cards Estadísticas -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="glass-card p-5 rounded-2xl flex items-center gap-4">
+                            <div class="p-3 bg-emerald-500/20 text-emerald-400 rounded-xl border border-emerald-500/30">
+                                <i data-lucide="map-pin" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-emerald-200/70">Distancia Estimada</p>
+                                <p id="steps-km-display" class="text-xl font-bold text-white">0.00 <span class="text-xs font-normal text-emerald-300">km</span></p>
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-5 rounded-2xl flex items-center gap-4">
+                            <div class="p-3 bg-amber-500/20 text-amber-400 rounded-xl border border-amber-500/30">
+                                <i data-lucide="flame" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-emerald-200/70">Calorías Quemadas</p>
+                                <p id="steps-kcal-display" class="text-xl font-bold text-white">0 <span class="text-xs font-normal text-amber-300">kcal</span></p>
+                            </div>
+                        </div>
+
+                        <div class="glass-card p-5 rounded-2xl flex items-center gap-4">
+                            <div class="p-3 bg-blue-500/20 text-blue-400 rounded-xl border border-blue-500/30">
+                                <i data-lucide="timer" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-emerald-200/70">Tiempo Caminado</p>
+                                <p id="steps-time-display" class="text-xl font-bold text-white">0 <span class="text-xs font-normal text-blue-300">min</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Formularios y Simulación -->
+                    <div class="glass-card p-6 rounded-3xl space-y-5">
+                        <h4 class="text-base font-bold text-white flex items-center gap-2">
+                            <i data-lucide="plus-circle" class="w-5 h-5 text-emerald-400"></i> Registrar Pasos
+                        </h4>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Sumar Pasos Manualmente -->
+                            <div class="bg-black/20 p-4 rounded-2xl border border-white/5 space-y-3">
+                                <label class="block text-xs font-semibold text-emerald-200">Añadir Pasos Manualmente:</label>
+                                <div class="flex gap-2">
+                                    <input type="number" id="add-steps-input" placeholder="ej. 1500" class="w-full bg-white/10 border border-white/10 rounded-xl px-3 py-2 text-xs text-white placeholder-emerald-200/40 focus:outline-none focus:border-emerald-400">
+                                    <button onclick="addManualSteps()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold transition-all shadow-md">
+                                        Sumar
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Simulación de Caminata -->
+                            <div class="bg-black/20 p-4 rounded-2xl border border-white/5 space-y-3 flex flex-col justify-between">
+                                <div>
+                                    <label class="block text-xs font-semibold text-emerald-200">Simulador de Caminata en Vivo:</label>
+                                    <p class="text-[11px] text-emerald-100/60 mt-0.5">Simula el incremento automático de pasos mientras caminas.</p>
+                                </div>
+                                <button onclick="toggleStepSimulation()" id="sim-steps-btn" class="w-full py-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-200 border border-blue-500/30 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2">
+                                    <i data-lucide="play" class="w-4 h-4"></i> Iniciar Simulación
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Botones Rápidos de Adición y Reseteo -->
+                        <div class="flex flex-wrap gap-2 pt-2 border-t border-white/10">
+                            <button onclick="addQuickSteps(500)" class="px-3 py-1.5 bg-white/5 hover:bg-white/10 text-emerald-200 rounded-lg text-xs font-medium transition-all">+500 pasos</button>
+                            <button onclick="addQuickSteps(1000)" class="px-3 py-1.5 bg-white/5 hover:bg-white/10 text-emerald-200 rounded-lg text-xs font-medium transition-all">+1,000 pasos</button>
+                            <button onclick="addQuickSteps(2500)" class="px-3 py-1.5 bg-white/5 hover:bg-white/10 text-emerald-200 rounded-lg text-xs font-medium transition-all">+2,500 pasos</button>
+                            <button onclick="resetSteps()" class="ml-auto px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30 rounded-lg text-xs font-medium transition-all flex items-center gap-1">
+                                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reiniciar Hoy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráfico Historial de la Semana -->
+            <div class="glass-card rounded-3xl p-6 sm:p-8">
+                <h3 class="text-xl font-bold text-white mb-2 flex items-center gap-2">
+                    <i data-lucide="bar-chart-3" class="w-5 h-5 text-emerald-400"></i> Historial Semanal de Pasos
+                </h3>
+                <p class="text-xs text-emerald-100/70 mb-6">Comparativa de tus pasos acumulados durante los últimos 7 días</p>
+
+                <div id="weekly-chart-container" class="grid grid-cols-7 gap-2 sm:gap-4 h-48 items-end pt-6 border-b border-white/10 pb-2">
+                    <!-- Barras generadas por JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MENÚ 3: RUTINAS DE EJERCICIO ================= -->
+        <section id="sec-ejercicio" class="space-y-6 hidden">
+            <!-- Hero Banner Ejercicio + Temporizador Top -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 relative glass-card rounded-3xl overflow-hidden border border-white/10 p-6 sm:p-8 flex flex-col justify-center">
+                    <div class="absolute inset-0 z-0 opacity-20">
+                        <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1200&q=80" alt="Ejercicio Físico" class="w-full h-full object-cover">
+                    </div>
+                    <div class="relative z-10">
+                        <span class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-300 bg-emerald-500/20 px-3 py-1 rounded-full mb-3 border border-emerald-500/30">
+                            <i data-lucide="flame" class="w-3.5 h-3.5"></i> Actividad & Energía
+                        </span>
+                        <h2 class="text-3xl font-extrabold text-white mb-2">Rutinas de Ejercicio Diarias</h2>
+                        <p class="text-emerald-100/80 text-sm max-w-xl">
+                            Entrenamientos diseñados para activar tu metabolismo, ganar fuerza y mantener la movilidad corporal en cualquier momento.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Temporizador interactivo en tiempo real -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col items-center justify-center border border-emerald-500/30">
+                    <span class="text-xs text-emerald-300 font-bold uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <i data-lucide="timer" class="w-4 h-4"></i> Cronómetro de Ejercicio
+                    </span>
+                    <div id="workout-timer-display" class="text-4xl font-mono font-black text-white mb-4 tracking-wider">00:00</div>
+                    <div class="flex gap-2 w-full">
+                        <button onclick="toggleWorkoutTimer()" id="timer-main-btn" class="flex-1 py-2.5 px-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md">
+                            <i data-lucide="play" class="w-4 h-4"></i> Iniciar
+                        </button>
+                        <button onclick="resetWorkoutTimer()" class="py-2.5 px-4 bg-white/10 hover:bg-white/20 text-emerald-200 rounded-xl text-xs font-bold transition-all">
+                            Reiniciar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filtro de Categorías de Ejercicio -->
+            <div class="flex gap-2 overflow-x-auto pb-1">
+                <button onclick="filterWorkouts('todos')" class="workout-cat-btn bg-emerald-500 text-white text-xs px-4 py-2.5 rounded-xl font-semibold whitespace-nowrap">Todas las Categorías</button>
+                <button onclick="filterWorkouts('cardio')" class="workout-cat-btn bg-white/5 text-emerald-200 hover:bg-white/10 text-xs px-4 py-2.5 rounded-xl font-semibold whitespace-nowrap">Cardio / HIIT</button>
+                <button onclick="filterWorkouts('fuerza')" class="workout-cat-btn bg-white/5 text-emerald-200 hover:bg-white/10 text-xs px-4 py-2.5 rounded-xl font-semibold whitespace-nowrap">Entrenamiento de Fuerza</button>
+                <button onclick="filterWorkouts('yoga')" class="workout-cat-btn bg-white/5 text-emerald-200 hover:bg-white/10 text-xs px-4 py-2.5 rounded-xl font-semibold whitespace-nowrap">Yoga & Estiramientos</button>
+                <button onclick="filterWorkouts('pausa')" class="workout-cat-btn bg-white/5 text-emerald-200 hover:bg-white/10 text-xs px-4 py-2.5 rounded-xl font-semibold whitespace-nowrap">Pausas Activas</button>
+            </div>
+
+            <!-- Grid de Ejercicios -->
+            <div id="workouts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Cardio -->
+                <div class="workout-card glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col justify-between" data-category="cardio">
+                    <div>
+                        <div class="relative h-44 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1434682881908-b43d0467b798?auto=format&fit=crop&w=800&q=80" alt="Cardio HIIT" class="w-full h-full object-cover">
+                            <span class="absolute top-3 left-3 bg-red-500/90 text-red-950 font-bold text-[11px] px-2.5 py-1 rounded-lg backdrop-blur-md">Cardio / HIIT</span>
+                            <span class="absolute bottom-3 right-3 bg-black/60 text-emerald-300 font-mono text-xs px-2.5 py-1 rounded-md backdrop-blur-md">15 min</span>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-lg font-bold text-white mb-2">Circuito Quema Calórica Express</h3>
+                            <p class="text-xs text-emerald-100/75 mb-4">Combina Jumping Jacks, Burpees modificados y Escaladores de montaña para acelerar tu pulso.</p>
+                            <div class="bg-black/20 p-3 rounded-xl border border-white/5 text-xs text-emerald-200/90">
+                                <strong>Estructura:</strong> 4 Series × 40 seg trabajo / 20 seg descanso.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-5">
+                        <button onclick="toggleItemCheck(this, 'ex-1')" id="ex-1" class="w-full py-2.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 border border-emerald-500/30 transition-all">
+                            <i data-lucide="circle" class="check-icon w-4 h-4"></i> <span>Marcar como Completado</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Fuerza -->
+                <div class="workout-card glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col justify-between" data-category="fuerza">
+                    <div>
+                        <div class="relative h-44 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=800&q=80" alt="Fuerza" class="w-full h-full object-cover">
+                            <span class="absolute top-3 left-3 bg-amber-500/90 text-amber-950 font-bold text-[11px] px-2.5 py-1 rounded-lg backdrop-blur-md">Fuerza</span>
+                            <span class="absolute bottom-3 right-3 bg-black/60 text-emerald-300 font-mono text-xs px-2.5 py-1 rounded-md backdrop-blur-md">25 min</span>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-lg font-bold text-white mb-2">Rutina de Fuerza Corporal Total</h3>
+                            <p class="text-xs text-emerald-100/75 mb-4">Sentadillas, flexiones de brazo (push-ups), zancadas alternadas y plancha isométrica abdominal.</p>
+                            <div class="bg-black/20 p-3 rounded-xl border border-white/5 text-xs text-emerald-200/90">
+                                <strong>Estructura:</strong> 3 a 4 Series de 12 repeticiones por cada ejercicio.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-5">
+                        <button onclick="toggleItemCheck(this, 'ex-2')" id="ex-2" class="w-full py-2.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 border border-emerald-500/30 transition-all">
+                            <i data-lucide="circle" class="check-icon w-4 h-4"></i> <span>Marcar como Completado</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Yoga -->
+                <div class="workout-card glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col justify-between" data-category="yoga">
+                    <div>
+                        <div class="relative h-44 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=800&q=80" alt="Yoga" class="w-full h-full object-cover">
+                            <span class="absolute top-3 left-3 bg-emerald-500/90 text-emerald-950 font-bold text-[11px] px-2.5 py-1 rounded-lg backdrop-blur-md">Yoga & Flexibilidad</span>
+                            <span class="absolute bottom-3 right-3 bg-black/60 text-emerald-300 font-mono text-xs px-2.5 py-1 rounded-md backdrop-blur-md">20 min</span>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-lg font-bold text-white mb-2">Flujo de Yoga y Flexibilidad</h3>
+                            <p class="text-xs text-emerald-100/75 mb-4">Posturas de Perro Boca Abajo, Guerro I/II y Cobra para aliviar tensión en columna y caderas.</p>
+                            <div class="bg-black/20 p-3 rounded-xl border border-white/5 text-xs text-emerald-200/90">
+                                <strong>Estructura:</strong> Mantener cada postura 5 respiraciones profundas.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-5">
+                        <button onclick="toggleItemCheck(this, 'ex-3')" id="ex-3" class="w-full py-2.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 border border-emerald-500/30 transition-all">
+                            <i data-lucide="circle" class="check-icon w-4 h-4"></i> <span>Marcar como Completado</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pausa Activa -->
+                <div class="workout-card glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col justify-between" data-category="pausa">
+                    <div>
+                        <div class="relative h-44 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Pausa Activa" class="w-full h-full object-cover">
+                            <span class="absolute top-3 left-3 bg-blue-500/90 text-blue-950 font-bold text-[11px] px-2.5 py-1 rounded-lg backdrop-blur-md">Pausa Activa</span>
+                            <span class="absolute bottom-3 right-3 bg-black/60 text-emerald-300 font-mono text-xs px-2.5 py-1 rounded-md backdrop-blur-md">5 min</span>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-lg font-bold text-white mb-2">Movilidad en Escritorio / Oficina</h3>
+                            <p class="text-xs text-emerald-100/75 mb-4">Estiramientos de cuello, rotaciones de hombros y extensión lumbar para quienes trabajan sentados.</p>
+                            <div class="bg-black/20 p-3 rounded-xl border border-white/5 text-xs text-emerald-200/90">
+                                <strong>Recomendación:</strong> Realizar cada 2 horas de trabajo continuo.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-5">
+                        <button onclick="toggleItemCheck(this, 'ex-4')" id="ex-4" class="w-full py-2.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 border border-emerald-500/30 transition-all">
+                            <i data-lucide="circle" class="check-icon w-4 h-4"></i> <span>Marcar como Completado</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MENÚ 4: BIENESTAR MENTAL Y DESCANSO ================= -->
+        <section id="sec-mente" class="space-y-6 hidden">
+            <!-- Interactivo de Respiración + Higiene del Sueño -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Simulador de Respiración Guiada -->
+                <div class="glass-card rounded-3xl p-6 sm:p-8 flex flex-col items-center text-center justify-between border border-emerald-500/30">
+                    <div class="w-full">
+                        <span class="inline-flex items-center gap-1.5 text-xs font-bold text-teal-300 bg-teal-500/20 px-3 py-1 rounded-full mb-3 border border-teal-500/30">
+                            <i data-lucide="wind" class="w-3.5 h-3.5"></i> Calma & Anti-Estrés
+                        </span>
+                        <h3 class="text-2xl font-bold text-white mb-2">Ejercicio de Respiración 4-7-8</h3>
+                        <p class="text-xs text-emerald-100/70 mb-6">Inhala durante 4 segundos, mantén durante 7s y exhala suavemente durante 8s para relajar tu sistema nervioso.</p>
+                    </div>
+
+                    <!-- Visualizador Animado -->
+                    <div class="relative w-48 h-48 flex items-center justify-center my-4">
+                        <div class="breathing-circle absolute w-36 h-36 bg-emerald-400/20 rounded-full border border-emerald-400/50"></div>
+                        <div class="relative z-10 text-center">
+                            <div id="breath-status" class="text-lg font-bold text-white mb-1">Inhala...</div>
+                            <div id="breath-timer" class="text-2xl font-mono text-emerald-300 font-extrabold">4s</div>
+                        </div>
+                    </div>
+
+                    <button onclick="toggleBreathingGuide()" id="breath-btn" class="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold transition-all shadow-lg mt-4 flex items-center justify-center gap-2">
+                        <i data-lucide="play" class="w-4 h-4"></i> Iniciar Sesión de Respiración
+                    </button>
+                </div>
+
+                <!-- Higiene del Sueño -->
+                <div class="glass-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
+                    <div>
+                        <div class="relative h-40 rounded-2xl overflow-hidden mb-5">
+                            <img src="https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=800&q=80" alt="Sueño Reparador" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4">
+                                <h4 class="text-lg font-bold text-white">Guía para un Sueño Reparador</h4>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3 p-3 bg-black/20 rounded-xl border border-white/5">
+                                <i data-lucide="moon" class="w-5 h-5 text-indigo-300 shrink-0 mt-0.5"></i>
+                                <div>
+                                    <h5 class="text-xs font-bold text-white">Apaga Pantallas 1 hora antes</h5>
+                                    <p class="text-[11px] text-emerald-100/70">La luz azul interrumpe la secreción natural de melatonina.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-black/20 rounded-xl border border-white/5">
+                                <i data-lucide="thermometer-snowflake" class="w-5 h-5 text-blue-300 shrink-0 mt-0.5"></i>
+                                <div>
+                                    <h5 class="text-xs font-bold text-white">Mantén la habitación fresca</h5>
+                                    <p class="text-[11px] text-emerald-100/70">La temperatura ideal para dormir oscila entre los 18°C y 20°C.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-black/20 rounded-xl border border-white/5">
+                                <i data-lucide="coffee" class="w-5 h-5 text-amber-300 shrink-0 mt-0.5"></i>
+                                <div>
+                                    <h5 class="text-xs font-bold text-white">Evita cafeína por la tarde</h5>
+                                    <p class="text-[11px] text-emerald-100/70">La vida media de la cafeína es de hasta 6 horas en el organismo.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Meditación y Artículos -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+                <div class="glass-card glass-card-hover rounded-2xl p-6">
+                    <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80" alt="Meditación" class="w-full h-36 object-cover rounded-xl mb-4">
+                    <h4 class="text-base font-bold text-white mb-2">Mindfulness Diario</h4>
+                    <p class="text-xs text-emerald-100/70 leading-relaxed">Dedica 10 minutos al despertar para prestar atención plena a tu respiración sin juzgar tus pensamientos.</p>
+                </div>
+                <div class="glass-card glass-card-hover rounded-2xl p-6">
+                    <img src="https://images.unsplash.com/photo-1499209974431-9dac3ada00d7?auto=format&fit=crop&w=600&q=80" alt="Desconexión" class="w-full h-36 object-cover rounded-xl mb-4">
+                    <h4 class="text-base font-bold text-white mb-2">Desconexión Digital</h4>
+                    <p class="text-xs text-emerald-100/70 leading-relaxed">Establece límites claros en el uso de redes sociales para reducir la fatiga mental y la ansiedad.</p>
+                </div>
+                <div class="glass-card glass-card-hover rounded-2xl p-6">
+                    <img src="https://images.unsplash.com/photo-1447452001602-7090c7ab2db3?auto=format&fit=crop&w=600&q=80" alt="Naturaleza" class="w-full h-36 object-cover rounded-xl mb-4">
+                    <h4 class="text-base font-bold text-white mb-2">Baños de Naturaleza</h4>
+                    <p class="text-xs text-emerald-100/70 leading-relaxed">Caminar al aire libre rodeado de vegetación reduce significativamente la presión arterial y el cortisol.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= MENÚ 5: CALCULADORAS Y HERRAMIENTAS ================= -->
+        <section id="sec-calculadoras" class="space-y-6 hidden">
+            <!-- Calculadora de Agua + Calculadora de Macros -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- Calculadora de Hidratación -->
+                <div class="glass-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between border border-blue-500/20">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-3 bg-blue-500/20 text-blue-400 rounded-2xl border border-blue-500/30">
+                                <i data-lucide="droplet" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">Rastreador de Hidratación</h3>
+                                <p class="text-xs text-emerald-100/70">Calcula tu meta de agua y registra tu progreso</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-black/20 p-4 rounded-2xl mb-5 border border-white/5">
+                            <label class="block text-xs font-semibold text-emerald-200 mb-2">Ingresa tu peso corporal (kg):</label>
+                            <div class="flex gap-2">
+                                <input type="number" id="water-weight-input" value="70" class="bg-white/10 border border-white/10 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-emerald-400 w-full">
+                                <button onclick="recalculateWaterGoal()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold transition-all">Calcular</button>
+                            </div>
+                        </div>
+
+                        <!-- Estado del Agua -->
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center text-xs font-semibold">
+                                <span class="text-emerald-100">Meta calculada:</span>
+                                <span id="water-goal-display" class="font-mono text-emerald-300 font-bold">2.45 Litros</span>
+                            </div>
+                            <div class="w-full bg-black/40 rounded-full h-3.5 overflow-hidden border border-white/10">
+                                <div id="water-progress-bar" class="bg-blue-500 h-full transition-all duration-500" style="width: 0%;"></div>
+                            </div>
+                            <div class="flex justify-between text-xs text-emerald-200/70">
+                                <span id="water-current-text">0.0 L consumidos</span>
+                                <span id="water-percent-text">0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2 mt-6">
+                        <button onclick="addWaterAmount(0.25)" class="flex-1 py-2.5 bg-blue-500/20 hover:bg-blue-500/30 text-blue-200 border border-blue-500/30 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all">
+                            <i data-lucide="plus" class="w-4 h-4"></i> +250ml
+                        </button>
+                        <button onclick="addWaterAmount(0.50)" class="flex-1 py-2.5 bg-blue-500/20 hover:bg-blue-500/30 text-blue-200 border border-blue-500/30 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all">
+                            <i data-lucide="plus" class="w-4 h-4"></i> +500ml
+                        </button>
+                        <button onclick="resetWaterAmount()" class="px-3 py-2.5 bg-white/5 hover:bg-white/10 text-emerald-200 rounded-xl text-xs font-semibold transition-all">
+                            Reiniciar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Calculadora de Calorías/Macros -->
+                <div class="glass-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="p-3 bg-emerald-500/20 text-emerald-400 rounded-2xl border border-emerald-500/30">
+                                <i data-lucide="calculator" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">Calculadora Nutricional Aproximada</h3>
+                                <p class="text-xs text-emerald-100/70">Estimación de Calorías para Mantenimiento</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 mb-4">
+                            <div>
+                                <label class="block text-[11px] text-emerald-200 mb-1">Edad:</label>
+                                <input type="number" id="calc-age" value="25" class="w-full bg-white/10 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-emerald-200 mb-1">Nivel Actividad:</label>
+                                <select id="calc-activity" class="w-full bg-slate-900/90 border border-white/10 rounded-xl px-2 py-1.5 text-xs text-white">
+                                    <option value="1.2">Sedentario</option>
+                                    <option value="1.375" selected>Moderado (1-3 días/sem)</option>
+                                    <option value="1.55">Activo (3-5 días/sem)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button onclick="calculateMacros()" class="w-full py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold transition-all mb-4">Calcular Necesidad Calórica</button>
+
+                        <div id="macro-results" class="bg-black/20 p-4 rounded-2xl border border-white/5 space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-emerald-200">Calorías estimadas:</span>
+                                <span id="res-calories" class="font-bold text-white font-mono">~2,100 kcal</span>
+                            </div>
+                            <div class="flex justify-between text-xs">
+                                <span class="text-emerald-200">Proteína diaria rec.:</span>
+                                <span id="res-protein" class="font-bold text-emerald-300 font-mono">105g - 140g</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Módulo Mitos vs Realidades + Habit Tracker -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Mitos vs Realidades -->
+                <div class="glass-card rounded-3xl p-6 sm:p-8">
+                    <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="help-circle" class="w-5 h-5 text-amber-400"></i> Mitos vs Realidades de Salud
+                    </h3>
+                    <div class="space-y-3">
+                        <details class="bg-black/20 rounded-xl p-3 border border-white/5 group">
+                            <summary class="text-xs font-bold text-emerald-200 cursor-pointer flex justify-between items-center">
+                                ❌ "Comer carbohidratos de noche engorda"
+                                <i data-lucide="chevron-down" class="w-4 h-4 transition-transform group-open:rotate-180"></i>
+                            </summary>
+                            <p class="text-xs text-emerald-100/70 mt-2 pt-2 border-t border-white/5 leading-relaxed">
+                                <strong>Falso:</strong> El aumento de peso depende del balance calórico total del día, no de la hora específica a la que ingieres los alimentos.
+                            </p>
+                        </details>
+                        <details class="bg-black/20 rounded-xl p-3 border border-white/5 group">
+                            <summary class="text-xs font-bold text-emerald-200 cursor-pointer flex justify-between items-center">
+                                ❌ "Sudarse mucho ayuda a quemar más grasa"
+                                <i data-lucide="chevron-down" class="w-4 h-4 transition-transform group-open:rotate-180"></i>
+                            </summary>
+                            <p class="text-xs text-emerald-100/70 mt-2 pt-2 border-t border-white/5 leading-relaxed">
+                                <strong>Falso:</strong> El sudor es solo un mecanismo térmico para regular la temperatura. Perder sudor equivale a perder agua y electrolitos, no grasa corporal.
+                            </p>
+                        </details>
+                        <details class="bg-black/20 rounded-xl p-3 border border-white/5 group">
+                            <summary class="text-xs font-bold text-emerald-200 cursor-pointer flex justify-between items-center">
+                                ❌ "Las dietas detox a base de jugos limpian el cuerpo"
+                                <i data-lucide="chevron-down" class="w-4 h-4 transition-transform group-open:rotate-180"></i>
+                            </summary>
+                            <p class="text-xs text-emerald-100/70 mt-2 pt-2 border-t border-white/5 leading-relaxed">
+                                <strong>Falso:</strong> Tu hígado y tus riñones se encargan de desintoxicar el cuerpo de forma natural las 24 horas del día.
+                            </p>
+                        </details>
+                    </div>
+                </div>
+
+                <!-- Habit Tracker General -->
+                <div class="glass-card rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-1 flex items-center gap-2">
+                            <i data-lucide="check-check" class="w-5 h-5 text-emerald-400"></i> Registrador de Hábitos Diarios
+                        </h3>
+                        <p class="text-xs text-emerald-100/70 mb-4">Marca tus hábitos cumplidos hoy para ver tu progreso acumulado</p>
+
+                        <div class="space-y-2.5">
+                            <label class="flex items-center gap-3 p-3 bg-black/20 rounded-xl border border-white/5 cursor-pointer hover:bg-black/30 transition-all">
+                                <input type="checkbox" onchange="updateHabitProgress()" class="habit-check w-4 h-4 accent-emerald-500 rounded">
+                                <span class="text-xs text-emerald-100">Tomar al menos 2 Litros de Agua</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 bg-black/20 rounded-xl border border-white/5 cursor-pointer hover:bg-black/30 transition-all">
+                                <input type="checkbox" onchange="updateHabitProgress()" class="habit-check w-4 h-4 accent-emerald-500 rounded">
+                                <span class="text-xs text-emerald-100">Completar la Meta de Pasos o Ejercicio</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 bg-black/20 rounded-xl border border-white/5 cursor-pointer hover:bg-black/30 transition-all">
+                                <input type="checkbox" onchange="updateHabitProgress()" class="habit-check w-4 h-4 accent-emerald-500 rounded">
+                                <span class="text-xs text-emerald-100">Comer 3 porciones de Frutas / Verduras</span>
+                            </label>
+                            <label class="flex items-center gap-3 p-3 bg-black/20 rounded-xl border border-white/5 cursor-pointer hover:bg-black/30 transition-all">
+                                <input type="checkbox" onchange="updateHabitProgress()" class="habit-check w-4 h-4 accent-emerald-500 rounded">
+                                <span class="text-xs text-emerald-100">Dormir 7 a 8 Horas Continuas</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-white/10">
+                        <div class="flex justify-between text-xs font-bold mb-1.5">
+                            <span class="text-emerald-200">Progreso del Día:</span>
+                            <span id="habit-progress-text" class="text-emerald-300">0%</span>
+                        </div>
+                        <div class="w-full bg-black/40 rounded-full h-3 overflow-hidden border border-white/10">
+                            <div id="habit-progress-bar" class="bg-emerald-500 h-full transition-all duration-500" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Detalle de Receta -->
+    <div id="recipe-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md hidden">
+        <div class="glass-card w-full max-w-2xl rounded-3xl overflow-hidden border border-white/20 max-h-[90vh] flex flex-col">
+            <div class="relative h-56 shrink-0">
+                <img id="modal-img" src="" alt="Comida" class="w-full h-full object-cover">
+                <button onclick="closeRecipeModal()" class="absolute top-4 right-4 bg-black/60 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-md transition-all">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+                <span id="modal-category" class="absolute bottom-4 left-4 bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg"></span>
+            </div>
+            
+            <div class="p-6 overflow-y-auto space-y-5">
+                <div>
+                    <h3 id="modal-title" class="text-2xl font-bold text-white mb-2"></h3>
+                    <p id="modal-desc" class="text-xs text-emerald-100/80 leading-relaxed"></p>
+                </div>
+
+                <!-- Macros Grid -->
+                <div class="grid grid-cols-4 gap-2 bg-black/30 p-3.5 rounded-2xl border border-white/10 text-center">
+                    <div>
+                        <p class="text-[10px] text-emerald-200/70 uppercase font-bold">Calorías</p>
+                        <p id="modal-kcal" class="text-sm font-extrabold text-white font-mono"></p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-emerald-200/70 uppercase font-bold">Proteínas</p>
+                        <p id="modal-prot" class="text-sm font-extrabold text-emerald-300 font-mono"></p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-emerald-200/70 uppercase font-bold">Carbos</p>
+                        <p id="modal-carb" class="text-sm font-extrabold text-amber-300 font-mono"></p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-emerald-200/70 uppercase font-bold">Grasas</p>
+                        <p id="modal-fat" class="text-sm font-extrabold text-blue-300 font-mono"></p>
+                    </div>
+                </div>
+
+                <!-- Ingredientes & Preparación -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
+                        <h4 class="text-xs font-bold text-emerald-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                            <i data-lucide="shopping-bag" class="w-4 h-4"></i> Ingredientes
+                        </h4>
+                        <ul id="modal-ingredients" class="text-xs text-emerald-100/80 space-y-1.5 list-disc list-inside"></ul>
+                    </div>
+
+                    <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
+                        <h4 class="text-xs font-bold text-emerald-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                            <i data-lucide="chef-hat" class="w-4 h-4"></i> Preparación
+                        </h4>
+                        <ol id="modal-steps" class="text-xs text-emerald-100/80 space-y-1.5 list-decimal list-inside"></ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="glass-nav mt-12 py-6 text-center text-xs text-emerald-200/60 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>© 2026 VidaSana PRO. Todos los derechos reservados. Diseñado para un estilo de vida saludable.</p>
+        </div>
+    </footer>
+
+    <!-- LÓGICA Y SCRIPTS JAVASCRIPT -->
+    <script>
+        // Inicializar Iconos Lucide
+        lucide.createIcons();
+
+        // BASE DE DATOS AMPLIADA DE COMIDAS CON DETALLES Y MACROS
+        const mealsDatabase = [
+            {
+                id: "meal-1",
+                title: "Tostadas de Aguacate con Huevo Pochado",
+                type: "desayuno",
+                categoryLabel: "Desayuno Nutritivo",
+                badgeColor: "bg-amber-500/90 text-amber-950",
+                img: "https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=800&q=80",
+                kcal: 380,
+                protein: "18g",
+                carbs: "32g",
+                fat: "20g",
+                desc: "Pan de masa madre integral con aguacate cremoso, huevo pochado y semillas de chía con toque de pimentón dulce.",
+                ingredients: ["2 rebanadas de pan integral de masa madre", "1/2 aguacate maduro", "2 huevos frescos", "1 cdta. semillas de chía o sésamo", "Sal marina y pimienta al gusto"],
+                steps: ["Tuesta las rebanadas de pan hasta que estén crujientes.", "Tritura el aguacate con sal y pimienta.", "Cocina los huevos en agua hirviendo con un chorrito de vinagre por 3 minutos.", "Unte el aguacate en el pan, coloca los huevos encima y espolvorea las semillas."]
+            },
+            {
+                id: "meal-2",
+                title: "Omelette de Espinacas, Champiñones y Queso Feta",
+                type: "desayuno",
+                categoryLabel: "Desayuno Proteico",
+                badgeColor: "bg-amber-500/90 text-amber-950",
+                img: "https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=800&q=80",
+                kcal: 320,
+                protein: "24g",
+                carbs: "6g",
+                fat: "22g",
+                desc: "Omelette esponjoso repleto de nutrientes, vegetal verde y sabor mediterráneo ideal para iniciar la mañana.",
+                ingredients: ["3 huevos grandes", "1 taza de espinacas frescas", "1/2 taza de champiñones laminados", "30g de queso feta desmenuzado", "1 cdta. aceite de oliva virgen extra"],
+                steps: ["Saltea los champiñones y espinacas en una sartén con aceite por 2 minutos.", "Bate los huevos con una pizca de sal y viértelos sobre la sartén.", "Agrega el queso feta cuando comience a cuajar y dobla la omelette a la mitad."]
+            },
+            {
+                id: "meal-3",
+                title: "Bowl Nutritivo de Salmón y Quinua",
+                type: "almuerzo",
+                categoryLabel: "Almuerzo Energético",
+                badgeColor: "bg-emerald-500/90 text-emerald-950",
+                img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80",
+                kcal: 540,
+                protein: "38g",
+                carbs: "45g",
+                fat: "22g",
+                desc: "Filete de salmón salvaje a la plancha servido sobre base de quinua, edamame, pepino y aderezo sésamo-limón.",
+                ingredients: ["150g de filete de salmón", "1/2 taza de quinua cocida", "1/2 taza de edamame al vapor", "1/2 pepino en rodajas", "1 cda. aceite de sésamo y jugo de limón"],
+                steps: ["Sazona el salmón y cocínalo a fuego medio-alto 3-4 minutos por lado.", "Coloca la quinua en el fondo de un bowl.", "Añade el salmón, edamame y pepino al lado.", "Baña con el aderezo ligero de sésamo y limón."]
+            },
+            {
+                id: "meal-4",
+                title: "Pechuga de Pollo al Limón con Camote y Brócoli",
+                type: "almuerzo",
+                categoryLabel: "Almuerzo Fitness",
+                badgeColor: "bg-emerald-500/90 text-emerald-950",
+                img: "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80",
+                kcal: 460,
+                protein: "42g",
+                carbs: "40g",
+                fat: "12g",
+                desc: "Plato magro y completo con pollo jugoso marinado a las hierbas, camote asado al horno y brócoli al vapor.",
+                ingredients: ["180g pechuga de pollo desosada", "1 camote/batata mediano en cubos", "1.5 tazas de ramilletes de brócoli", "Jugo de 1 limón, romero y ajo"],
+                steps: ["Hornea los cubos de camote a 200°C con sal y aceite por 20 min.", "Cocina la pechuga marinada al sartén con romero y jugo de limón.", "Cocina el brócoli al vapor por 4 minutos para mantener textura crujiente."]
+            },
+            {
+                id: "meal-5",
+                title: "Cena Ligera de Pescado Blanco con Vegetales Salteados",
+                type: "cena",
+                categoryLabel: "Cena Ligera",
+                badgeColor: "bg-indigo-500/90 text-indigo-950",
+                img: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=800&q=80",
+                kcal: 310,
+                protein: "32g",
+                carbs: "14g",
+                fat: "11g",
+                desc: "Filete de pescado blanco a las finas hierbas acompañado de calabacín, pimientos y espárragos al salteado verde.",
+                ingredients: ["170g filete de merluza o tilapia", "1 calabacín mediano laminado", "1/2 pimiento rojo", "6 espárragos frescos", "1 cda. aceite de oliva y pimienta"],
+                steps: ["Cocina los vegetales salteados en una sartén wok durante 5 minutos.", "En otra sartén, cocina el pescado blanco con unas gotas de limón por 3 minutos por lado.", "Sirve caliente y espolvorea perejil fresco."]
+            },
+            {
+                id: "meal-6",
+                title: "Ensalada Mediterránea con Garbanzos y Aguacate",
+                type: "cena",
+                categoryLabel: "Cena Vegetariana",
+                badgeColor: "bg-indigo-500/90 text-indigo-950",
+                img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80",
+                kcal: 360,
+                protein: "14g",
+                carbs: "42g",
+                fat: "16g",
+                desc: "Mezcla fresca y saciante de garbanzos, tomates cherry, pepino, aceitunas negras y vinagreta de orégano.",
+                ingredients: ["1 taza garbanzos cocidos", "1/2 taza tomates cherry partidos", "1/2 pepino picado", "1/4 aguacate en cubos", "2 cdas aceitunas negras", "Vinagreta de vinagre de manzana y orégano"],
+                steps: ["Mezcla los garbanzos, tomates, pepino y aceitunas en un bol.", "Añade el aguacate en cubos cuidadosamente.", "Adereza con la vinagreta casera justo antes de consumir."]
+            },
+            {
+                id: "meal-7",
+                title: "Yogur Griego con Frutos Rojos y Granola Casera",
+                type: "snack",
+                categoryLabel: "Snack / Merienda",
+                badgeColor: "bg-purple-500/90 text-purple-950",
+                img: "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=800&q=80",
+                kcal: 220,
+                protein: "16g",
+                carbs: "24g",
+                fat: "6g",
+                desc: "Copa de yogur rico en probióticos, arándanos frescos, frambuesas y granola crocante sin azúcar refinada.",
+                ingredients: ["150g yogur griego natural 0%", "1/2 taza mezcla de arándanos y frambuesas", "2 cdas granola integral de avena", "1 cdta miel pura (opcional)"],
+                steps: ["Coloca una capa de yogur en un vaso o bowl.", "Añade la mitad de los frutos rojos y la granola.", "Cubre con el resto de yogur y decora con los frutos rojos restantes."]
+            },
+            {
+                id: "meal-8",
+                title: "Hummus Tradicional con Bastoncillos de Vegetales",
+                type: "snack",
+                categoryLabel: "Snack Saludable",
+                badgeColor: "bg-purple-500/90 text-purple-950",
+                img: "https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80",
+                kcal: 180,
+                protein: "7g",
+                carbs: "20g",
+                fat: "9g",
+                desc: "Crema suave de garbanzos con tahini y pimentón servida con bastones crujientes de zanahoria y apio.",
+                ingredients: ["4 cdas hummus casero o comercial", "1 zanahoria grande en bastones", "2 tallos de apio", "1/2 pepino en bastones"],
+                steps: ["Lava y corta los vegetales en bastones uniformes.", "Sirve el hummus en un tazón pequeño con un hilo de aceite de oliva.", "Disfruta untando los vegetales en la crema."]
+            }
+        ];
+
+        // 1. Navegación entre Pestañas Principales
+        function switchTab(tabId) {
+            const sections = ['comidas', 'pasos', 'ejercicio', 'mente', 'calculadoras'];
+            sections.forEach(sec => {
+                const el = document.getElementById(`sec-${sec}`);
+                if (el) el.classList.add('hidden');
+                
+                const btn = document.getElementById(`tab-${sec}`);
+                if (btn) btn.className = "tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-emerald-100/80 hover:text-white hover:bg-white/5 transition-all duration-300 whitespace-nowrap";
+            });
+
+            const activeSec = document.getElementById(`sec-${tabId}`);
+            if (activeSec) activeSec.classList.remove('hidden');
+
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            if (activeBtn) activeBtn.className = "tab-btn flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 whitespace-nowrap bg-emerald-500 text-white shadow-lg shadow-emerald-950/50";
+        }
+
+        // 2. Renderizado e Interacción de Comidas
+        function renderMeals(filterType = 'todos', searchQuery = '') {
+            const grid = document.getElementById('meals-grid');
+            grid.innerHTML = '';
+
+            const filtered = mealsDatabase.filter(m => {
+                const matchesType = (filterType === 'todos') || (m.type === filterType);
+                const matchesSearch = m.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                                      m.desc.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesType && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 glass-card rounded-2xl">
+                        <i data-lucide="utensils-crossed" class="w-10 h-10 text-emerald-400 mx-auto mb-3"></i>
+                        <p class="text-sm text-emerald-200">No se encontraron recetas con los criterios seleccionados.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            filtered.forEach(m => {
+                const isChecked = localStorage.getItem(m.id) === 'done';
+                const card = document.createElement('div');
+                card.className = "meal-card glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col justify-between";
+                card.innerHTML = `
+                    <div>
+                        <div class="relative h-48 overflow-hidden cursor-pointer" onclick="openRecipeModal('${m.id}')">
+                            <img src="${m.img}" alt="${m.title}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                            <span class="absolute top-3 left-3 ${m.badgeColor} font-bold text-[11px] px-2.5 py-1 rounded-lg backdrop-blur-md shadow-md">
+                                ${m.categoryLabel}
+                            </span>
+                            <span class="absolute bottom-3 right-3 bg-black/70 text-emerald-300 font-mono text-xs px-2.5 py-1 rounded-md backdrop-blur-md">~${m.kcal} kcal</span>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="text-base font-bold text-white mb-2 cursor-pointer hover:text-emerald-300 transition-colors" onclick="openRecipeModal('${m.id}')">${m.title}</h3>
+                            <p class="text-xs text-emerald-100/75 mb-4 leading-relaxed line-clamp-2">${m.desc}</p>
+                            
+                            <!-- Macros Chips -->
+                            <div class="flex flex-wrap gap-1.5 mb-2 text-[10px]">
+                                <span class="bg-white/10 text-emerald-200 px-2 py-1 rounded-md font-mono">Prot: ${m.protein}</span>
+                                <span class="bg-white/10 text-amber-200 px-2 py-1 rounded-md font-mono">Carb: ${m.carbs}</span>
+                                <span class="bg-white/10 text-blue-200 px-2 py-1 rounded-md font-mono">Grasas: ${m.fat}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="px-5 pb-5 flex gap-2">
+                        <button onclick="openRecipeModal('${m.id}')" class="px-3 py-2.5 bg-white/10 hover:bg-white/20 text-emerald-200 rounded-xl text-xs font-semibold transition-all">
+                            Ver Receta
+                        </button>
+                        <button onclick="toggleMealCheck('${m.id}')" id="btn-${m.id}" class="flex-1 py-2.5 ${isChecked ? 'bg-emerald-500 text-white' : 'bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200'} rounded-xl text-xs font-semibold flex items-center justify-center gap-2 border border-emerald-500/30 transition-all">
+                            <i data-lucide="${isChecked ? 'check-circle-2' : 'circle'}" class="w-4 h-4"></i>
+                            <span>${isChecked ? '¡Consumido!' : 'Marcar Consumido'}</span>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        let currentMealFilter = 'todos';
+        function filterMeals(type) {
+            currentMealFilter = type;
+            const buttons = document.querySelectorAll('.meal-plan-btn');
+            buttons.forEach(b => b.className = "meal-plan-btn bg-white/5 text-emerald-200 hover:bg-white/10 text-xs px-3.5 py-2 rounded-xl font-medium transition-all");
+            event.target.className = "meal-plan-btn bg-emerald-500 text-white text-xs px-3.5 py-2 rounded-xl font-medium transition-all";
+            renderMeals(currentMealFilter, document.getElementById('meal-search').value);
+        }
+
+        function searchMeal() {
+            renderMeals(currentMealFilter, document.getElementById('meal-search').value);
+        }
+
+        function toggleMealCheck(mealId) {
+            const isDone = localStorage.getItem(mealId) === 'done';
+            if (!isDone) {
+                localStorage.setItem(mealId, 'done');
+            } else {
+                localStorage.removeItem(mealId);
+            }
+            renderMeals(currentMealFilter, document.getElementById('meal-search').value);
+        }
+
+        // Modal de Recetas
+        function openRecipeModal(mealId) {
+            const m = mealsDatabase.find(item => item.id === mealId);
+            if (!m) return;
+
+            document.getElementById('modal-img').src = m.img;
+            document.getElementById('modal-title').innerText = m.title;
+            document.getElementById('modal-desc').innerText = m.desc;
+            document.getElementById('modal-category').innerText = m.categoryLabel;
+
+            document.getElementById('modal-kcal').innerText = `${m.kcal} kcal`;
+            document.getElementById('modal-prot').innerText = m.protein;
+            document.getElementById('modal-carb').innerText = m.carbs;
+            document.getElementById('modal-fat').innerText = m.fat;
+
+            const ingList = document.getElementById('modal-ingredients');
+            ingList.innerHTML = m.ingredients.map(i => `<li>${i}</li>`).join('');
+
+            const stepsList = document.getElementById('modal-steps');
+            stepsList.innerHTML = m.steps.map(s => `<li>${s}</li>`).join('');
+
+            document.getElementById('recipe-modal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeRecipeModal() {
+            document.getElementById('recipe-modal').classList.add('hidden');
+        }
+
+        // 3. MÓDULO DE CONTADOR DE PASOS DIARIOS
+        let userStepsGoal = parseInt(localStorage.getItem('user_steps_goal') || 10000);
+        let userStepsCurrent = parseInt(localStorage.getItem('user_steps_current') || 0);
+        let stepSimInterval = null;
+
+        function updateStepsUI() {
+            document.getElementById('steps-count-display').innerText = userStepsCurrent.toLocaleString();
+            document.getElementById('steps-goal-display').innerText = userStepsGoal.toLocaleString();
+            document.getElementById('steps-goal-input').value = userStepsGoal;
+
+            const percent = Math.min(Math.round((userStepsCurrent / userStepsGoal) * 100), 100);
+            document.getElementById('steps-percent-display').innerText = `${percent}% completado`;
+
+            // Actualizar círculo SVG (Circunferencia = 2 * PI * 42 = ~263.89)
+            const circle = document.getElementById('step-svg-circle');
+            const circumference = 263.89;
+            const offset = circumference - (percent / 100) * circumference;
+            circle.style.strokeDashoffset = offset;
+
+            // Cálculos aproximados
+            // Distancia: ~0.75m por paso
+            const km = ((userStepsCurrent * 0.75) / 1000).toFixed(2);
+            // Calorías: ~0.04 kcal por paso
+            const kcal = Math.round(userStepsCurrent * 0.04);
+            // Tiempo: ~100 pasos por minuto caminata normal
+            const minutes = Math.round(userStepsCurrent / 100);
+
+            document.getElementById('steps-km-display').innerHTML = `${km} <span class="text-xs font-normal text-emerald-300">km</span>`;
+            document.getElementById('steps-kcal-display').innerHTML = `${kcal} <span class="text-xs font-normal text-amber-300">kcal</span>`;
+            document.getElementById('steps-time-display').innerHTML = `${minutes} <span class="text-xs font-normal text-blue-300">min</span>`;
+
+            renderWeeklyChart();
+        }
+
+        function saveStepsGoal() {
+            const val = parseInt(document.getElementById('steps-goal-input').value);
+            if (val && val >= 1000) {
+                userStepsGoal = val;
+                localStorage.setItem('user_steps_goal', userStepsGoal);
+                updateStepsUI();
+            }
+        }
+
+        function addManualSteps() {
+            const input = document.getElementById('add-steps-input');
+            const val = parseInt(input.value);
+            if (val && val > 0) {
+                userStepsCurrent += val;
+                localStorage.setItem('user_steps_current', userStepsCurrent);
+                input.value = '';
+                updateStepsUI();
+            }
+        }
+
+        function addQuickSteps(amount) {
+            userStepsCurrent += amount;
+            localStorage.setItem('user_steps_current', userStepsCurrent);
+            updateStepsUI();
+        }
+
+        function resetSteps() {
+            userStepsCurrent = 0;
+            localStorage.setItem('user_steps_current', 0);
+            if (stepSimInterval) toggleStepSimulation();
+            updateStepsUI();
+        }
+
+        function toggleStepSimulation() {
+            const btn = document.getElementById('sim-steps-btn');
+            if (!stepSimInterval) {
+                stepSimInterval = setInterval(() => {
+                    userStepsCurrent += Math.floor(Math.random() * 12) + 5;
+                    localStorage.setItem('user_steps_current', userStepsCurrent);
+                    updateStepsUI();
+                }, 800);
+                btn.innerHTML = `<i data-lucide="pause" class="w-4 h-4"></i> Detener Simulación`;
+                btn.className = "w-full py-2 bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-500/30 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2";
+            } else {
+                clearInterval(stepSimInterval);
+                stepSimInterval = null;
+                btn.innerHTML = `<i data-lucide="play" class="w-4 h-4"></i> Iniciar Simulación`;
+                btn.className = "w-full py-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-200 border border-blue-500/30 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2";
+            }
+            lucide.createIcons();
+        }
+
+        // Historial Semanal Simulado
+        function renderWeeklyChart() {
+            const container = document.getElementById('weekly-chart-container');
+            const days = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Hoy'];
+            const historyData = [6500, 8200, 10400, 7100, 9500, 11200, userStepsCurrent];
+
+            container.innerHTML = days.map((day, idx) => {
+                const steps = historyData[idx];
+                const pct = Math.min(Math.round((steps / userStepsGoal) * 100), 100);
+                const isToday = idx === 6;
+
+                return `
+                    <div class="flex flex-col items-center h-full justify-end group">
+                        <span class="text-[10px] text-emerald-200/70 font-mono mb-1 group-hover:text-white transition-colors">${(steps/1000).toFixed(1)}k</span>
+                        <div class="w-full bg-black/40 rounded-t-xl h-full flex items-end overflow-hidden border border-white/5 p-0.5">
+                            <div class="w-full ${isToday ? 'bg-emerald-400' : 'bg-emerald-500/50'} rounded-t-lg transition-all duration-500" style="height: ${pct}%;"></div>
+                        </div>
+                        <span class="text-[11px] font-bold ${isToday ? 'text-emerald-300' : 'text-emerald-100/60'} mt-2">${day}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 4. Filtro de Ejercicios
+        function filterWorkouts(cat) {
+            const cards = document.querySelectorAll('.workout-card');
+            const buttons = document.querySelectorAll('.workout-cat-btn');
+
+            buttons.forEach(b => b.className = "workout-cat-btn bg-white/5 text-emerald-200 hover:bg-white/10 text-xs px-4 py-2.5 rounded-xl font-semibold whitespace-nowrap");
+            event.target.className = "workout-cat-btn bg-emerald-500 text-white text-xs px-4 py-2.5 rounded-xl font-semibold whitespace-nowrap";
+
+            cards.forEach(card => {
+                const cardCat = card.getAttribute('data-category');
+                if (cat === 'todos' || cardCat === cat) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleItemCheck(btn, itemId) {
+            const isChecked = btn.classList.contains('bg-emerald-500');
+            const icon = btn.querySelector('.check-icon');
+            const text = btn.querySelector('span');
+
+            if (!isChecked) {
+                btn.className = "w-full py-2.5 bg-emerald-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-md";
+                text.innerText = "¡Completado!";
+                icon.setAttribute('data-lucide', 'check-circle-2');
+                localStorage.setItem(itemId, 'done');
+            } else {
+                btn.className = "w-full py-2.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 border border-emerald-500/30 transition-all";
+                text.innerText = "Marcar como Completado";
+                icon.setAttribute('data-lucide', 'circle');
+                localStorage.removeItem(itemId);
+            }
+            lucide.createIcons();
+        }
+
+        // 5. Cronómetro de Ejercicios
+        let workoutTimer = null;
+        let workoutSeconds = 0;
+        let isWorkoutTimerRunning = false;
+
+        function toggleWorkoutTimer() {
+            const btn = document.getElementById('timer-main-btn');
+            if (!isWorkoutTimerRunning) {
+                isWorkoutTimerRunning = true;
+                btn.innerHTML = `<i data-lucide="pause" class="w-4 h-4"></i> Pausar`;
+                btn.className = "flex-1 py-2.5 px-4 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md";
+                workoutTimer = setInterval(() => {
+                    workoutSeconds++;
+                    const m = Math.floor(workoutSeconds / 60).toString().padStart(2, '0');
+                    const s = (workoutSeconds % 60).toString().padStart(2, '0');
+                    document.getElementById('workout-timer-display').innerText = `${m}:${s}`;
+                }, 1000);
+            } else {
+                isWorkoutTimerRunning = false;
+                clearInterval(workoutTimer);
+                btn.innerHTML = `<i data-lucide="play" class="w-4 h-4"></i> Reanudar`;
+                btn.className = "flex-1 py-2.5 px-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md";
+            }
+            lucide.createIcons();
+        }
+
+        function resetWorkoutTimer() {
+            clearInterval(workoutTimer);
+            isWorkoutTimerRunning = false;
+            workoutSeconds = 0;
+            document.getElementById('workout-timer-display').innerText = "00:00";
+            const btn = document.getElementById('timer-main-btn');
+            btn.innerHTML = `<i data-lucide="play" class="w-4 h-4"></i> Iniciar`;
+            btn.className = "flex-1 py-2.5 px-4 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-md";
+            lucide.createIcons();
+        }
+
+        // 6. Respiración Guiada Interactiva (4-7-8)
+        let breathInterval = null;
+        let isBreathingActive = false;
+
+        function toggleBreathingGuide() {
+            const btn = document.getElementById('breath-btn');
+            const statusText = document.getElementById('breath-status');
+            const timerText = document.getElementById('breath-timer');
+
+            if (!isBreathingActive) {
+                isBreathingActive = true;
+                btn.innerText = "Detener Sesión";
+                btn.className = "w-full py-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition-all shadow-lg mt-4 flex items-center justify-center gap-2";
+
+                let phase = 0;
+                let count = 4;
+
+                breathInterval = setInterval(() => {
+                    count--;
+                    if (count <= 0) {
+                        phase = (phase + 1) % 3;
+                        if (phase === 0) { count = 4; statusText.innerText = "Inhala..."; }
+                        else if (phase === 1) { count = 7; statusText.innerText = "Mantén la respiración..."; }
+                        else if (phase === 2) { count = 8; statusText.innerText = "Exhala lentamente..."; }
+                    }
+                    timerText.innerText = `${count}s`;
+                }, 1000);
+            } else {
+                isBreathingActive = false;
+                clearInterval(breathInterval);
+                statusText.innerText = "Inhala...";
+                timerText.innerText = "4s";
+                btn.innerText = "Iniciar Sesión de Respiración";
+                btn.className = "w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold transition-all shadow-lg mt-4 flex items-center justify-center gap-2";
+            }
+        }
+
+        // 7. Calculadora de Agua
+        let targetWater = 2.45;
+        let currentWater = parseFloat(localStorage.getItem('user_water_current') || 0);
+
+        function recalculateWaterGoal() {
+            const weight = parseFloat(document.getElementById('water-weight-input').value);
+            if (weight && weight > 20) {
+                targetWater = parseFloat(((weight * 35) / 1000).toFixed(2));
+                document.getElementById('water-goal-display').innerText = `${targetWater} Litros`;
+                updateWaterUI();
+            }
+        }
+
+        function addWaterAmount(amount) {
+            currentWater = parseFloat((currentWater + amount).toFixed(2));
+            localStorage.setItem('user_water_current', currentWater);
+            updateWaterUI();
+        }
+
+        function resetWaterAmount() {
+            currentWater = 0;
+            localStorage.setItem('user_water_current', 0);
+            updateWaterUI();
+        }
+
+        function updateWaterUI() {
+            const pct = Math.min(Math.round((currentWater / targetWater) * 100), 100);
+            document.getElementById('water-progress-bar').style.width = `${pct}%`;
+            document.getElementById('water-current-text').innerText = `${currentWater} L consumidos`;
+            document.getElementById('water-percent-text').innerText = `${pct}%`;
+        }
+
+        // 8. Calculadora de Macros/Calorías
+        function calculateMacros() {
+            const age = parseInt(document.getElementById('calc-age').value) || 25;
+            const act = parseFloat(document.getElementById('calc-activity').value);
+
+            const bmr = 1600;
+            const tdee = Math.round(bmr * act);
+
+            document.getElementById('res-calories').innerText = `~${tdee} kcal`;
+            document.getElementById('res-protein').innerText = `${Math.round(tdee * 0.20 / 4)}g - ${Math.round(tdee * 0.25 / 4)}g`;
+        }
+
+        // 9. Habit Tracker Progress
+        function updateHabitProgress() {
+            const checks = document.querySelectorAll('.habit-check');
+            let checkedCount = 0;
+            checks.forEach(c => { if (c.checked) checkedCount++; });
+
+            const percentage = Math.round((checkedCount / checks.length) * 100);
+            document.getElementById('habit-progress-bar').style.width = `${percentage}%`;
+            document.getElementById('habit-progress-text').innerText = `${percentage}%`;
+        }
+
+        // Cargar estado guardado e inicializar
+        window.addEventListener('DOMContentLoaded', () => {
+            renderMeals();
+            updateStepsUI();
+            updateWaterUI();
+
+            const checkableButtons = ['ex-1', 'ex-2', 'ex-3', 'ex-4'];
+            checkableButtons.forEach(id => {
+                if (localStorage.getItem(id) === 'done') {
+                    const btn = document.getElementById(id);
+                    if (btn) toggleItemCheck(btn, id);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
